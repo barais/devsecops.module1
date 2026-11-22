@@ -1,0 +1,11 @@
+/* Global CSS — auto-loaded by Slidev.
+   Layout-root rules (e.g. .slidev-layout.two-cols-header) cannot live in
+   per-slide <style> blocks, so they go here, scoped by layoutClass. */
+.slidev-layout.my-slide.two-cols-header {
+  grid-template-columns: 3fr 3fr;
+  column-gap: 1.25rem;
+}
+.slidev-layout.practices-slide.two-cols-header {
+  grid-template-columns: 3fr 3fr;
+  column-gap: 1.25rem;
+}
