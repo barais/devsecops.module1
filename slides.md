@@ -942,10 +942,15 @@ layout: end
 
 # Questions ?
 
-<div class="mt-8 text-center opacity-70">
-Prochain cours : <strong>Git & GitFlow</strong> — Gestion de versions et collaboration
+<div class="mt-8 max-w-2xl mx-auto text-left">
+
+**Ressources :**
+
+- 📄 **Poly du cours** : [télécharger le poly (PDF)](https://raw.githubusercontent.com/barais/devsecops.module1/refs/heads/master/poly/poly.pdf)
+- ➡️ **Cours suivant — Cours 2 — Gestion de Versions & Git** : [https://olivier.barais.fr/devsecops.module2](https://olivier.barais.fr/devsecops.module2)
+
 </div>
 
-<div class="mt-4 text-sm opacity-50 text-center">
-Olivier Barais · Université de Rennes · IRISA / DiverSE · 2026
+<div class="mt-8 text-sm opacity-50">
+Olivier Barais · Module DevSecOps
 </div>
