@@ -11,6 +11,14 @@ info: |
   ## DevSecOps — Université de Rennes / IRISA / DiverSE
   Cours 1 : Introduction DevSecOps & Philosophie DevOps
   Olivier Barais
+pdf: true
+export: true
+drawings:
+  persist: false
+# slide transition: https://sli.dev/guide/animations.html#slide-transitions
+# enable Comark Syntax: https://comark.dev/syntax/markdown
+comark: true
+download: true
 ---
 
 # DevSecOps
