@@ -298,14 +298,14 @@ La troisième voie transforme les connaissances individuelles en *capital organi
 
 = Le cadre CALMS
 
-Le cadre *CALMS*, formalisé par John Willis (co-auteur de _The DevOps Handbook_) @calms-definition, offre une grille de lecture pour évaluer et décrire la maturité DevOps d'une organisation. Il identifie cinq piliers interdépendants.
+Le cadre *CALMS* — initialement *CAMS* (Culture, Automation, Measurement, Sharing), introduit par John Willis et Damon Edwards @calms-definition et complété par le *L* de *Lean* par Jez Humble — offre une grille de lecture pour évaluer et décrire la maturité DevOps d'une organisation. Il identifie cinq piliers interdépendants.
 
 == C — Culture
 
 La culture est le fondement de DevOps. Sans changement culturel, même les meilleurs outils ne produiront pas les résultats attendus. Une culture DevOps se caractérise par :
 
 - *La collaboration* entre Dev et Ops comme norme, et non comme exception.
-- *La responsabilité partagée* : « You build it, you run it » (Walter Vogels, CTO d'Amazon).
+- *La responsabilité partagée* : « You build it, you run it » (Werner Vogels, CTO d'Amazon).
 - *La transparence* : les métriques de performance sont visibles par tous.
 - *La confiance* : les équipes ont le droit de prendre des décisions et d'expérimenter.
 
@@ -379,6 +379,8 @@ Le programme *DevOps Research and Assessment* (DORA), fondé par Nicole Forsgren
   ]
 )
 
+Aux quatre métriques historiques — les *four keys* —, DORA a ajouté en 2024 une cinquième métrique, le *deployment rework rate* : la part des déploiements non planifiés, déclenchés par un incident de production. Les cinq métriques sont désormais regroupées en deux facteurs : le *throughput* (la rapidité : change lead time, deployment frequency, failed deployment recovery time) et l'*instability* (la stabilité : change fail rate, deployment rework rate) @dora-metrics.
+
 == Les niveaux de performance DORA (rapport 2023)
 
 #figure(
@@ -391,18 +393,18 @@ Le programme *DevOps Research and Assessment* (DORA), fondé par Nicole Forsgren
       text(fill: white)[*Lead Time*],
       text(fill: white)[*Deploy Freq.*],
       text(fill: white)[*CFR*],
-      text(fill: white)[*MTTR*],
+      text(fill: white)[*Recovery*],
     ),
-    [Elite], [< 1 heure], [À la demande], [0–5 %], [< 1 heure],
-    [High], [1 jour – 1 semaine], [1×/semaine – 1×/mois], [5–10 %], [< 1 jour],
-    [Medium], [1 semaine – 1 mois], [1×/mois – 1×/6 mois], [10–15 %], [1–7 jours],
-    [Low], [> 6 mois], [< 1×/6 mois], [46–60 %], [> 6 mois],
+    [Elite], [< 1 jour], [Sur demande], [5 %], [< 1 heure],
+    [High], [1 jour – 1 semaine], [1×/jour – 1×/semaine], [10 %], [< 1 jour],
+    [Medium], [1 semaine – 1 mois], [1×/semaine – 1×/mois], [15 %], [1–7 jours],
+    [Low], [1 semaine – 1 mois], [1×/semaine – 1×/mois], [64 %], [1 mois – 6 mois],
   ),
-  caption: [Niveaux de performance DORA — State of DevOps Report 2023]
+  caption: [Niveaux de performance DORA — Accelerate State of DevOps Report 2023]
 )
 
 #keypoint[
-  Les organisations de niveau Elite ont 182× plus de déploiements, 6× moins de temps pour restaurer un service et 3× moins de taux d'échec des changements que les organisations de niveau Low. Ces écarts sont corrélés avec la performance commerciale globale de l'organisation @accelerate.
+  Les organisations de niveau Elite déploient *sur demande*, contre environ une fois par semaine pour le niveau Low, et restaurent un déploiement échoué en moins d'une heure, là où le niveau Low met un à six mois. Leur taux d'échec des changements est d'environ 5 %, contre 64 % pour les organisations les moins performantes @state-of-devops-2023. Ces écarts sont corrélés avec la performance commerciale globale de l'organisation.
 ]
 
 == Implications pour la sécurité
@@ -473,6 +475,30 @@ Les outils DevOps s'organisent selon les phases de la chaîne de valeur. Cette s
 // SYNTHÈSE
 // ============================================================
 
+= La supply chain logicielle : une surface d'attaque
+
+Le développement modernisé par DevOps s'appuie sur une *chaîne d'approvisionnement logicielle* : dépendances tierces, registres de paquets, pipelines CI/CD, artefacts signés. Chaque maillon de cette chaîne est une cible potentielle. Quatre incidents illustrent pourquoi la sécurité doit s'intégrer directement dans ces mécanismes.
+
+== event-stream (2018)
+
+En 2018, le paquet JavaScript `event-stream` — très populaire, avec des millions de téléchargements — a été compromis par son nouveau mainteneur, qui y a ajouté une dépendance malveillante, `flatmap-stream`. Le code malveillant ciblait le portefeuille de cryptomonnaie Copay (BitGo) pour en dérober les clés privées @event-stream-incident. Un maillon unique de la chaîne a permis d'atteindre des milliers d'utilisateurs.
+
+== node-ipc / peacenotwar (2022)
+
+En mars 2022, le développeur du paquet `node-ipc` a publié une mise à jour contenant le module `peacenotwar`, une protestation contre l'invasion de l'Ukraine : sur les machines dont la géolocalisation désignait la Russie ou la Biélorussie, il écrasait les fichiers avec un cœur et un message pacifiste @node-ipc-snyk. L'impact — destructif pour certains utilisateurs — illustre le risque des dépendances malveillantes volontaires dans les registres de paquets.
+
+== SolarWinds Orion (2020)
+
+En 2020, l'outil d'administration Orion de SolarWinds a été compromis avant sa diffusion : un acteur APT (attribué à la Russie) a inséré une porte dérobée dans le produit, livrée aux clients par le mécanisme de mise à jour légitime @solarwinds-cisa. Environ 18 000 organisations, dont des agences gouvernementales américaines, ont installé la version compromise. C'est la compromission la plus emblématique d'une chaîne d'approvisionnement logicielle.
+
+== Hallucinations d'IA et squatting de paquets (2023)
+
+Parallèlement, les assistants de code fondés sur l'IA générative recommandent parfois des paquets qui n'existent pas — des *hallucinations* de paquets. Un attaquant peut alors enregistrer ces noms pour distribuer du code malveillant aux développeurs qui suivent aveuglément la recommandation @ai-hallucination-packages. C'est une nouvelle voie de compromission de la supply chain, amplifiée par l'adoption croissante de l'IA dans le développement.
+
+#keypoint[
+  Compromettre un maillon unique de la chaîne — une dépendance, un registre, un pipeline — permet d'atteindre des milliers de victimes simultanément. C'est pourquoi la sécurité doit être intégrée dès chaque étape du pipeline DevOps (*shift left*), et pas seulement vérifiée en fin de cycle.
+]
+
 = Synthèse et points clés
 
 Ce premier cours a posé les bases conceptuelles de l'UE DevSecOps. Les points essentiels à retenir sont les suivants.
@@ -483,7 +509,7 @@ DevOps n'est pas un outil, un titre de poste ou une simple extension d'Agile. C'
 
 == La supply chain logicielle est une surface d'attaque
 
-Les quatre incidents étudiés — `event-stream`, `node-ipc`, SolarWinds et les hallucinations LLM — illustrent que les attaquants ciblent désormais préférentiellement la *chaîne d'approvisionnement logicielle* plutôt que les applications elles-mêmes. Compromettre un maillon unique de cette chaîne permet d'atteindre des milliers de victimes simultanément.
+Les quatre incidents étudiés dans la section précédente — `event-stream`, `node-ipc`, SolarWinds et les hallucinations LLM — illustrent que les attaquants ciblent désormais préférentiellement la *chaîne d'approvisionnement logicielle* plutôt que les applications elles-mêmes. Compromettre un maillon unique de cette chaîne permet d'atteindre des milliers de victimes simultanément.
 
 == Les Trois Voies structurent la pensée DevOps
 
@@ -494,7 +520,7 @@ Les principes de Gene Kim offrent un cadre conceptuel cohérent : optimiser le s
 Les métriques DORA fournissent des indicateurs objectifs et scientifiquement validés pour évaluer la maturité d'une organisation. Sans mesure, l'amélioration reste une intuition.
 
 #keypoint[
-  *« You build it, you run it. »* — Walter Vogels, CTO d'Amazon.
+  *« You build it, you run it. »* — Werner Vogels, CTO d'Amazon.
 
   Quand les équipes qui construisent le logiciel sont aussi responsables de son exploitation, la qualité — y compris la sécurité — devient une propriété émergente du système.
 ]
@@ -513,9 +539,9 @@ Les métriques DORA fournissent des indicateurs objectifs et scientifiquement va
 
 - *Nicole Forsgren, Jez Humble, Gene Kim* — _Accelerate_ (2018, IT Revolution Press). Présente les bases scientifiques des métriques DORA et démontre le lien entre pratiques DevOps et performance organisationnelle.
 
-- *Gene Kim, Kevin Behr, George Spafford* — _The Phoenix Project_ (2013, IT Revolution Press). Roman qui met en scène les principes DevOps dans un contexte fictif d'entreprise — lecture recommandée pour comprendre les dynamiques humaines et organisationnelles.
+- *Gene Kim, Kevin Behr, George Spafford* — _The Phoenix Project_ (2013, IT Revolution Press) @phoenix-project. Roman qui met en scène les principes DevOps dans un contexte fictif d'entreprise — lecture recommandée pour comprendre les dynamiques humaines et organisationnelles.
 
-- *Jez Humble, David Farley* — _Continuous Delivery_ (2010, Addison-Wesley). Le livre fondateur des pratiques de livraison continue, encore d'actualité.
+- *Jez Humble, David Farley* — _Continuous Delivery_ (2010, Addison-Wesley) @continuous-delivery. Le livre fondateur des pratiques de livraison continue, encore d'actualité.
 
 == Rapports et ressources en ligne
 
@@ -524,12 +550,12 @@ Les métriques DORA fournissent des indicateurs objectifs et scientifiquement va
 - *SLSA — Supply-chain Levels for Software Artifacts* : #link("https://slsa.dev")
 - *CISA — SolarWinds Advisory AA21-008A* : #link("https://www.cisa.gov/uscert/ncas/alerts/aa21-008a")
 - *Snyk — peacenotwar / node-ipc* : #link("https://snyk.io/blog/peacenotwar-malicious-npm-node-ipc-package-vulnerability/")
-- *The Register — event-stream incident* : #link("https://www.theregister.com/2018/11/26/npm_reco_bitcoin_stealer/")
+- *The Register — event-stream incident* : #link("https://www.theregister.com/security/2018/11/26/check-your-repos-crypto-coin-stealing-code-sneaks-into-fairly-popular-npm-lib-2m-downloads-per-week/732879")
 
 == Ressources complémentaires pour ce cours
 
 - *Gene Kim* — « The Three Ways: The Principles Underpinning DevOps » (article, 2012) : #link("https://itrevolution.com/articles/the-three-ways-principles-underpinning-devops/")
-- *John Willis* — « What DevOps Means to Me » (article fondateur du cadre CALMS, 2010) : #link("https://itrevolution.com/articles/what-devops-means-to-me/")
+- *John Willis* — « What DevOps Means to Me » (article fondateur du cadre CAMS, 2010) : #link("https://www.chef.io/blog/what-devops-means-to-me")
 - *John Allspaw & Paul Hammond* — « 10+ Deploys per Day » (Velocity 2009, slides) : #link("https://www.slideshare.net/jallspaw/10-deploys-per-day-dev-and-ops-cooperation-at-flickr")
 
 #bibliography("refs.bib", title: none, style: "ieee")

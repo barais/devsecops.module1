@@ -107,7 +107,12 @@ h1 {
 }
 p {
   font-size: 0.9em;
+    padding:0.4em;
+  margin-top: 0em;
+  margin-bottom: 0em;
+
 }
+
 </style>
 
 ---
@@ -385,7 +390,7 @@ Dev et Ops partagent les objectifs, les métriques et **les responsabilités**.
 
 <div class="mt-4 p-3 border border-green-400/40 rounded-lg text-center bg-green-900/10">
 
-> *"You build it, You run it."* — **Walter Vogels**, Amazon CTO
+> *"You build it, You run it."* — **Werner Vogels**, Amazon CTO
 
 </div>
 
@@ -772,7 +777,7 @@ layout: section
 </div>
 
 <div class="mt-3 p-2 bg-yellow-900/20 rounded text-xs text-center">
-📖 Source : DORA — DevOps Research and Assessment (Google) · State of DevOps Report 2021
+📖 Source : DORA — DevOps Research and Assessment (Google) · State of DevOps Report 2024
 </div>
 ---
 
@@ -930,7 +935,7 @@ class: text-center
 
 <div v-click class="mt-8 p-4 bg-purple-900/30 rounded-xl max-w-2xl mx-auto">
 
-> *"You build it, you run it."* — **Walter Vogels**, Amazon CTO
+> *"You build it, you run it."* — **Werner Vogels**, Amazon CTO
 
 Quand ceux qui construisent sont aussi responsables de l'opération, la qualité devient une **propriété émergente** du système.
 
